@@ -1,0 +1,30 @@
+---
+
+repo_base_url: http://nginx.org/packages/mainline/centos/$releasever/$basearch/
+version: 1.16.1
+worker_processes: auto
+worker_connections: 4096
+worker_rlimit_nofile: 10240
+# below kernel params referenced from https://medium.com/@pawilon/tuning-your-linux-kernel-and-haproxy-instance-for-high-loads-1a2105ea553e
+required_kernel_params:
+  - key: fs.file-max
+    value: 500000
+  - key: net.core.netdev_max_backlog
+    value: 10240
+  - key: net.core.somaxconn
+    value: 10240
+  - key: net.ipv4.tcp_max_syn_backlog
+    value: 10240
+required_limits:
+  - key: LimitNOFILE
+    value: "{{ worker_rlimit_nofile }}"
+required_packages:
+  - firewalld
+required_ports:
+  - 80/tcp
+  - 443/tcp
+enable_ramfs: true
+ramfs_dir: /var/lib/nginx
+ramfs_size: 2G
+
+...
