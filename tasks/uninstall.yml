@@ -1,0 +1,55 @@
+---
+
+- name: Get service facts
+  service_facts:
+
+- name: Check if Nginx is installed
+  set_fact:
+    nginx_installed: true
+  when: ansible_facts.services["nginx.service"] is defined
+
+- name: Remove Nginx block
+  block:
+    - name: Include version specific variables for CentOS/RHEL
+      include_vars: "{{ ansible_os_family | lower }}_{{ ansible_distribution_major_version }}.yml"
+
+    - name: Ensure nginx service is stopped and disabled
+      service:
+        name: nginx
+        state: stopped
+        enabled: false
+
+    - name: Ensure firewalld configuration is reverted
+      firewalld:
+        port: "{{ item }}"
+        permanent: true
+        immediate: true
+        state: disabled
+      loop: "{{ required_ports }}"
+
+    - name: Remove nginx package
+      yum:
+        name: nginx
+        state: absent
+
+    - name: Ramfs related uninstallation block
+      block:
+        - name: Unmount ramfs directory
+          mount:
+            path: "{{ ramfs_dir }}"
+            state: unmounted
+
+        - name: Remove ramfs directory
+          file:
+            path: "{{ ramfs_dir }}"
+            state: absent
+      when: (enable_ramfs | bool)
+  rescue:
+    - name: Print error message and fail
+      fail:
+        msg: "Got an error inside block, try to rerun tasks with -v option"
+  when:
+    - ansible_facts.services["nginx.service"] is defined
+    - ansible_distribution == "CentOS" or ansible_distribution == "RedHat"
+
+...

@@ -1,0 +1,12 @@
+---
+
+- name: Verify port
+  hosts: all
+  tasks:
+    - name: Ensure Nginx port is reachable
+      wait_for:
+        host: localhost
+        port: 80
+        timeout: 3
+
+...

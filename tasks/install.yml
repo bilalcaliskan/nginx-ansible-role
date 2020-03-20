@@ -1,0 +1,111 @@
+---
+
+- name: Include version specific variables for CentOS/RHEL
+  include_vars: "{{ ansible_os_family | lower }}_{{ ansible_distribution_major_version }}.yml"
+
+- name: Transfer nginx repo template to the remote location
+  template:
+    src: nginx.repo.j2
+    dest: /etc/yum.repos.d/nginx.repo
+    owner: root
+    group: root
+    mode: 0644
+
+- name: Ensure required packages are installed
+  yum:
+    name: "{{ required_packages }}"
+    state: present
+
+- name: Install the specified version of Nginx
+  yum:
+    name: "nginx-{{ version }}"
+    enablerepo: nginx
+    state: present
+  when: version != "latest"
+
+- name: Install the latest version of Nginx
+  yum:
+    name: nginx
+    enablerepo: nginx
+    state: present
+  when: version == "latest"
+
+- name: Transfer .so file for nginx-vts-module to remote host
+  copy:
+    src: "ngx_http_vhost_traffic_status_module_{{ version }}.so"
+    dest: /etc/nginx/modules/ngx_http_vhost_traffic_status_module.so
+    owner: root
+    group: root
+    seuser: system_u
+    serole: object_r
+    setype: lib_t
+    mode: 0755
+  when: version == "1.16.1"
+
+- name: Ensure required services are started and enabled
+  service:
+    name: "{{ item }}"
+    state: started
+    enabled: true
+  loop:
+    - nginx
+    - firewalld
+
+- name: Ensure required kernel parameters set correctly
+  sysctl:
+    sysctl_file: /etc/sysctl.d/99-nginx.conf
+    reload: true
+    name: "{{ item.key }}"
+    value: "{{ item.value }}"
+  loop: "{{ required_kernel_params }}"
+
+- name: Selinux block for ramfs
+  block:
+    - name: Ensure ramfs directory exists
+      file:
+        path: "{{ ramfs_dir }}"
+        state: directory
+        owner: nginx
+        group: root
+
+    #- name: Allow apache to modify files in {{ ramfs_dir }}
+    #  sefcontext:
+    #    target: "{{ ramfs_dir }}"
+    #    setype: httpd_tmpfs_t
+    #    state: present
+    #  register: sefcontext_result
+
+    #- name: Apply new selinux file context to filesystem
+    #  command: "restorecon -irv {{ ramfs_dir }}"
+    #  when: sefcontext_result is changed
+
+    - name: Ensure ramfs is mounted
+      mount:
+        name: "{{ ramfs_dir }}"
+        src: tmpfs
+        fstype: tmpfs
+        opts: "defaults,size={{ ramfs_size }},uid=nginx,gid=nginx"
+        state: mounted
+  when: (enable_ramfs | bool)
+
+- name: Ensure required ports are reachable over firewalld
+  firewalld:
+    port: "{{ item }}"
+    permanent: true
+    immediate: true
+    state: enabled
+  loop: "{{ required_ports }}"
+
+- name: Transfer template files to the remote location
+  template:
+    src: "{{ item.src_path }}"
+    dest: "{{ item.dest_path }}"
+    owner: "{{ item.user }}"
+    group: "{{ item.group }}"
+    mode: "{{ item.mode }}"
+  loop:
+    - {src_path: nginx.conf.j2, dest_path: /etc/nginx/nginx.conf, user: root, group: root, mode: '0644'}
+    - {src_path: nginx.service.j2, dest_path: /usr/lib/systemd/system/nginx.service, user: root, group: root, mode: '0644'}
+  notify: reload nginx
+
+...
