@@ -59,7 +59,7 @@
     value: "{{ item.value }}"
   loop: "{{ required_kernel_params }}"
 
-- name: Selinux block for ramfs
+- name: Block for ramfs
   block:
     - name: Ensure ramfs directory exists
       file:
@@ -67,17 +67,6 @@
         state: directory
         owner: nginx
         group: root
-
-    #- name: Allow apache to modify files in {{ ramfs_dir }}
-    #  sefcontext:
-    #    target: "{{ ramfs_dir }}"
-    #    setype: httpd_tmpfs_t
-    #    state: present
-    #  register: sefcontext_result
-
-    #- name: Apply new selinux file context to filesystem
-    #  command: "restorecon -irv {{ ramfs_dir }}"
-    #  when: sefcontext_result is changed
 
     - name: Ensure ramfs is mounted
       mount:
