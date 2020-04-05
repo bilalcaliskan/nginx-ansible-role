@@ -24,19 +24,41 @@
     name: "{{ required_packages }}"
     state: present
 
-- name: Install the specified version of Nginx
-  yum:
-    name: "nginx-{{ version }}"
-    enablerepo: nginx
-    state: present
-  when: version != "latest"
+- name: Install Nginx for CentOS/RHEL 7 block
+  block:
+    - name: Install the specified version of Nginx from nginx repo
+      yum:
+        name: "nginx-{{ version }}"
+        enablerepo: nginx
+        state: present
+      when: version != "latest"
 
-- name: Install the latest version of Nginx
-  yum:
-    name: nginx
-    enablerepo: nginx
-    state: present
-  when: version == "latest"
+    - name: Install the latest version of Nginx from nginx repo
+      yum:
+        name: nginx
+        enablerepo: nginx
+        state: present
+      when: version == "latest"
+  when: ansible_distribution_major_version | int == 7
+
+- name: Install Nginx for CentOS/RHEL 8 block
+  block:
+    - name: Install the specified version of Nginx from nginx repo for CentOS/RHEL 8
+      yum:
+        name: "nginx-{{ version }}"
+        enablerepo: nginx
+        disablerepo: AppStream
+        state: present
+      when: version != "latest"
+
+    - name: Install the latest version of Nginx from nginx repo for CentOS/RHEL 8
+      yum:
+        name: nginx
+        enablerepo: nginx
+        disablerepo: AppStream
+        state: present
+      when: version == "latest"
+  when: ansible_distribution_major_version | int == 8
 
 - name: Ensure firewalld is started and enabled
   service:
