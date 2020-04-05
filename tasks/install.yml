@@ -43,6 +43,7 @@
     name: firewalld
     state: started
     enabled: true
+  changed_when: false
 
 - name: Ensure required kernel parameters set correctly
   sysctl:
