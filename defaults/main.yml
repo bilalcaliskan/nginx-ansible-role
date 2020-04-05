@@ -1,11 +1,22 @@
 ---
 
+############# Behavioral Parameters #############
 install_nginx: true
-repo_base_url: http://nginx.org/packages/mainline/centos/$releasever/$basearch/
+
+############# Nginx Repository Specific Parameters #############
+repo_base_url: http://nginx.org/packages/mainline/rhel/$releasever/$basearch/
+
+############# Nginx Specific Parameters #############
 version: 1.17.9
 worker_processes: auto
 worker_connections: 4096
 worker_rlimit_nofile: 10240
+enable_caching: true
+enable_ramfs: true
+ramfs_dir: /var/lib/nginx
+ramfs_size: 2G
+
+############# OS Specific Parameters #############
 # below kernel params referenced from https://medium.com/@pawilon/tuning-your-linux-kernel-and-haproxy-instance-for-high-loads-1a2105ea553e
 required_kernel_params:
   - key: fs.file-max
@@ -22,8 +33,8 @@ required_limits:
 required_ports:
   - 80/tcp
   - 443/tcp
-enable_ramfs: true
-ramfs_dir: /var/lib/nginx
-ramfs_size: 2G
+required_packages:
+  - firewalld
+  - policycoreutils-python
 
 ...

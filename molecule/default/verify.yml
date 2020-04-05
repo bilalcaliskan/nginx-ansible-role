@@ -7,6 +7,6 @@
       wait_for:
         host: localhost
         port: 80
-        timeout: 3
+        timeout: 5
 
 ...
