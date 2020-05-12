@@ -107,6 +107,12 @@
         state: mounted
   when: (enable_caching | bool) and (enable_ramfs | bool)
 
+- name: Set httpd_can_network_connect flag on and keep it persistent across reboots
+  seboolean:
+    name: httpd_can_network_connect
+    state: true
+    persistent: true
+
 - name: Ensure required ports are reachable over firewalld
   firewalld:
     port: "{{ item }}"
