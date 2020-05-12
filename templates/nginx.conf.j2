@@ -27,6 +27,11 @@ http {
     tcp_nodelay on;
     keepalive_timeout 65;
     #gzip on;
+{% if vservers | length == 0 %}
     include /etc/nginx/conf.d/*.conf;
+{% else %}
+    {% for item in vservers -%}
+    include /etc/nginx/conf.d/{{ item.file }};
+    {% endfor %}
+{% endif %}
 }
-

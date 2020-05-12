@@ -1,0 +1,20 @@
+---
+
+- name: Transfer template files to the remote location
+  copy:
+    src: "{{ item.file }}"
+    dest: "/etc/nginx/conf.d/{{ item.file }}"
+    owner: root
+    group: root
+    mode: 0644
+  loop: "{{ vservers }}"
+
+- name: Ensure required port reachable over firewalld for vservers
+  firewalld:
+    port: "{{ item.port }}"
+    permanent: true
+    immediate: true
+    state: enabled
+  loop: "{{ vservers }}"
+
+...
