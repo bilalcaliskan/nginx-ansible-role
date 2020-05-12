@@ -22,7 +22,7 @@
 - name: Ensure required packages are installed
   yum:
     name: "{{ required_packages }}"
-    state: latest
+    state: present
 
 - name: Install Nginx for CentOS/RHEL 7 block
   block:
