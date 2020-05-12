@@ -16,8 +16,8 @@ enable_ramfs: true
 ramfs_dir: /var/lib/nginx
 ramfs_size: 2G
 vservers:
-  - name: bilyoner
-    file: bilyoner.conf
+  - name: default
+    file: default.conf
     port: 80/tcp
 
 ############# OS Specific Parameters #############
