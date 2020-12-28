@@ -7,7 +7,7 @@ install_nginx: true
 repo_base_url: "http://nginx.org/packages/mainline/rhel/{{ ansible_distribution_major_version }}/$basearch/"
 
 ############# Nginx Specific Parameters #############
-version: 1.17.9
+version: 1.18.0
 worker_processes: auto
 worker_connections: 4096
 worker_rlimit_nofile: 10240
