@@ -16,5 +16,4 @@
     immediate: true
     state: enabled
   loop: "{{ vservers }}"
-
-...
+  when: (firewalld_enabled | bool)

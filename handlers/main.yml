@@ -1,0 +1,12 @@
+---
+
+- name: force systemd to reread configs
+  systemd:
+    daemon_reload: true
+
+- name: start and enable nginx
+  systemd:
+    name: nginx
+    state: started
+    enabled: true
+    daemon_reload: true

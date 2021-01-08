@@ -2,6 +2,7 @@
 
 ############# Behavioral Parameters #############
 install_nginx: true
+firewalld_enabled: true
 
 ############# Nginx Repository Specific Parameters #############
 repo_base_url: "http://nginx.org/packages/mainline/rhel/{{ ansible_distribution_major_version }}/$basearch/"
@@ -37,5 +38,3 @@ required_limits:
 required_ports:
   - 80/tcp
   - 443/tcp
-
-...
