@@ -11,6 +11,7 @@
     state: directory
     owner: nginx
     group: nginx
+    mode: 0755
   when: not ramfs_dir_stat_result.stat.exists
 
 - name: Change selinux context using file module

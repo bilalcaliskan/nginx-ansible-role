@@ -85,20 +85,20 @@
 
 - name: Firewalld related block
   block:
-  - name: Ensure firewalld is started and enabled
-    service:
-      name: firewalld
-      state: started
-      enabled: true
-    changed_when: false
+    - name: Ensure firewalld is started and enabled
+      service:
+        name: firewalld
+        state: started
+        enabled: true
+      changed_when: false
 
-  - name: Manage firewalld configuration
-    firewalld:
-      port: "{{ item }}"
-      permanent: true
-      immediate: true
-      state: enabled
-    loop: "{{ required_ports }}"
+    - name: Manage firewalld configuration
+      firewalld:
+        port: "{{ item }}"
+        permanent: true
+        immediate: true
+        state: enabled
+      loop: "{{ required_ports }}"
   when: (firewalld_enabled | bool)
 
 - name: Transfer template files to the remote location

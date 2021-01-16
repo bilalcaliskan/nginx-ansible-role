@@ -21,21 +21,21 @@
 
     - name: Firewalld related block while uninstalling
       block:
-      - name: Ensure firewalld configuration is reverted
-        firewalld:
-          port: "{{ item }}"
-          permanent: true
-          immediate: true
-          state: disabled
-        loop: "{{ required_ports }}"
+        - name: Ensure firewalld configuration is reverted
+          firewalld:
+            port: "{{ item }}"
+            permanent: true
+            immediate: true
+            state: disabled
+          loop: "{{ required_ports }}"
 
-      - name: Ensure firewalld configuration is reverted when vservers present
-        firewalld:
-          port: "{{ item.port }}"
-          permanent: true
-          immediate: true
-          state: disabled
-        loop: "{{ vservers }}"
+        - name: Ensure firewalld configuration is reverted when vservers present
+          firewalld:
+            port: "{{ item.port }}"
+            permanent: true
+            immediate: true
+            state: disabled
+          loop: "{{ vservers }}"
       when: ansible_facts.services["firewalld.service"].state == "running"
 
     - name: Remove nginx package
