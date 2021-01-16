@@ -1,8 +1,8 @@
 ## Nginx Ansible Role
 
-[![Build Status](https://travis-ci.org/bilalcaliskan/nginx-ansible-role.svg?branch=master)](https://travis-ci.org/bilalcaliskan/nginx-ansible-role)
+[![CI](https://github.com/bilalcaliskan/nginx-ansible-role/workflows/CI/badge.svg?event=push)](https://github.com/bilalcaliskan/nginx-ansible-role/actions?query=workflow%3ACI)
 
-Installs and configures Nginx on Centos/RHEL 7/8 servers.
+Installs and configures Nginx on RedHat/CentOS servers(7 and 8).
 
 ### Requirements
 
