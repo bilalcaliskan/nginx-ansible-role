@@ -67,6 +67,7 @@ jobs:
           MOLECULE_DISTRO: ${{ matrix.distro }}
 
   release:
+    name: Release
     needs:
       - molecule
     runs-on: ubuntu-latest
@@ -77,4 +78,4 @@ jobs:
         uses: robertdebock/galaxy-action@1.1.0
         with:
           galaxy_api_key: ${{ secrets.GALAXY_API_KEY }}
-          path: bilalcaliskan.nginx
+          path: 'bilalcaliskan.nginx's
