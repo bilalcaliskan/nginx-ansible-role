@@ -10,9 +10,6 @@
 
 - name: Remove Nginx block
   block:
-    - name: Include version specific variables for CentOS/RHEL
-      include_vars: "{{ ansible_os_family | lower }}_{{ ansible_distribution_major_version }}.yml"
-
     - name: Ensure nginx service is stopped and disabled
       service:
         name: nginx
@@ -38,10 +35,8 @@
           loop: "{{ vservers }}"
       when: ansible_facts.services["firewalld.service"].state == "running"
 
-    - name: Remove nginx package
-      yum:
-        name: nginx
-        state: absent
+    - name: Include distribution specific tasks
+      include_tasks: "uninstall_{{ ansible_os_family | lower }}.yml"
 
     - name: Ramfs related uninstallation block
       block:
@@ -56,14 +51,6 @@
             state: absent
       when: (enable_caching | bool) and (enable_ramfs | bool)
 
-    - name: Remove transferred files and created directories
-      file:
-        path: "{{ item }}"
-        state: absent
-      loop:
-        - /etc/yum.repos.d/nginx.repo
-        - /etc/nginx
-
     - name: Set fact after uninstallation
       set_fact:
         nginx_installed: false
@@ -71,6 +58,4 @@
     - name: Print error message and fail
       fail:
         msg: "Got an error inside block, try to rerun tasks with -v option"
-  when:
-    - ansible_facts.services["nginx.service"] is defined
-    - ansible_distribution == "CentOS" or ansible_distribution == "RedHat"
+  when: ansible_facts.services["nginx.service"] is defined

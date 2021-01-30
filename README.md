@@ -2,7 +2,7 @@
 
 [![CI](https://github.com/bilalcaliskan/nginx-ansible-role/workflows/CI/badge.svg?event=push)](https://github.com/bilalcaliskan/nginx-ansible-role/actions?query=workflow%3ACI)
 
-Installs and configures Nginx on RedHat/CentOS servers(7 and 8).
+Installs and configures Nginx.
 
 ### Requirements
 

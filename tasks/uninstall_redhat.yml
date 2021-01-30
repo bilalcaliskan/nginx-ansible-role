@@ -1,0 +1,14 @@
+---
+
+- name: Remove nginx package
+  yum:
+    name: nginx
+    state: absent
+
+- name: Remove transferred files and created directories
+  file:
+    path: "{{ item }}"
+    state: absent
+  loop:
+    - /etc/yum.repos.d/nginx.repo
+    - /etc/nginx

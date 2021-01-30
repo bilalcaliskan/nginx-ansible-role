@@ -1,9 +1,12 @@
 ---
 
+- name: Include OS specific variables.
+  include_vars: "{{ ansible_os_family | lower }}.yml"
+
 - name: Include install.yml file conditionally
-  include_tasks: install.yml
+  include_tasks: install_main.yml
   when: (install_nginx | bool)
 
 - name: Include uninstall.yml file conditionally
-  include_tasks: uninstall.yml
+  include_tasks: uninstall_main.yml
   when: not (install_nginx | bool)

@@ -1,0 +1,14 @@
+---
+
+- name: Remove nginx package
+  apt:
+    name: nginx
+    state: absent
+
+- name: Remove transferred files and created directories
+  file:
+    path: "{{ item }}"
+    state: absent
+  loop:
+    - /etc/apt/sources.list.d/nginx.list
+    - /etc/nginx

@@ -14,18 +14,21 @@
     mode: 0755
   when: not ramfs_dir_stat_result.stat.exists
 
-- name: Change selinux context using file module
-  file:
-    path: "{{ ramfs_dir }}"
-    setype: httpd_var_lib_t
-    seuser: system_u
-    serole: object_r
-    selevel: s0
+- name: Selinux related block for RedHat based hosts
+  block:
+    - name: Change selinux context using file module
+      file:
+        path: "{{ ramfs_dir }}"
+        setype: httpd_var_lib_t
+        seuser: system_u
+        serole: object_r
+        selevel: s0
 
-- name: Ensure ramfs is mounted with specific Selinux context
-  mount:
-    name: "{{ ramfs_dir }}"
-    src: tmpfs
-    fstype: tmpfs
-    opts: "defaults,size={{ ramfs_size }},uid=nginx,gid=nginx,context=system_u:object_r:httpd_var_lib_t:s0"
-    state: mounted
+    - name: Ensure ramfs is mounted with specific Selinux context
+      mount:
+        name: "{{ ramfs_dir }}"
+        src: tmpfs
+        fstype: tmpfs
+        opts: "defaults,size={{ ramfs_size }},uid=nginx,gid=nginx,context=system_u:object_r:httpd_var_lib_t:s0"
+        state: mounted
+  when: ansible_os_family == "RedHat"

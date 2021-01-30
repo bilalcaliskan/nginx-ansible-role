@@ -1,6 +1,8 @@
 [nginx]
 name=nginx
 description=Nginx rpm repository for {{ ansible_distribution }} {{ ansible_distribution_major_version }}
-baseurl={{ repo_base_url }}
-gpgcheck=0
+baseurl=http://nginx.org/packages/mainline/centos/$releasever/$basearch/
+gpgcheck=1
 enabled=0
+gpgkey=https://nginx.org/keys/nginx_signing.key
+module_hotfixes=true

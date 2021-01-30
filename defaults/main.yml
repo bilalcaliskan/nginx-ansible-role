@@ -4,9 +4,6 @@
 install_nginx: true
 firewalld_enabled: true
 
-############# Nginx Repository Specific Parameters #############
-repo_base_url: "http://nginx.org/packages/mainline/rhel/{{ ansible_distribution_major_version }}/$basearch/"
-
 ############# Nginx Specific Parameters #############
 version: 1.17.9
 worker_processes: auto

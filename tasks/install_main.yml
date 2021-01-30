@@ -2,9 +2,6 @@
 
 # TODO: Review https://github.com/nginxinc/ansible-role-nginx for improvements
 
-- name: Include version specific variables for CentOS/RHEL
-  include_vars: "{{ ansible_os_family | lower }}_{{ ansible_distribution_major_version }}.yml"
-
 - name: Get service facts
   service_facts:
 
@@ -13,54 +10,8 @@
     nginx_installed: false
   when: ansible_facts.services["nginx.service"] is not defined
 
-- name: Transfer nginx repo template to the remote location
-  template:
-    src: nginx.repo.j2
-    dest: /etc/yum.repos.d/nginx.repo
-    owner: root
-    group: root
-    mode: 0644
-
-- name: Ensure required packages are installed
-  yum:
-    name: "{{ required_packages }}"
-    state: present
-
-- name: Install Nginx for CentOS/RHEL 7 block
-  block:
-    - name: Install the specified version of Nginx from nginx repo
-      yum:
-        name: "nginx-{{ version }}"
-        enablerepo: nginx
-        state: present
-      when: version != "latest"
-
-    - name: Install the latest version of Nginx from nginx repo
-      yum:
-        name: nginx
-        enablerepo: nginx
-        state: present
-      when: version == "latest"
-  when: ansible_distribution_major_version | int == 7
-
-- name: Install Nginx for CentOS/RHEL 8 block
-  block:
-    - name: Install the specified version of Nginx from nginx repo for CentOS/RHEL 8
-      yum:
-        name: "nginx-{{ version }}"
-        enablerepo: nginx
-        disablerepo: AppStream
-        state: present
-      when: version != "latest"
-
-    - name: Install the latest version of Nginx from nginx repo for CentOS/RHEL 8
-      yum:
-        name: nginx
-        enablerepo: nginx
-        disablerepo: AppStream
-        state: present
-      when: version == "latest"
-  when: ansible_distribution_major_version | int == 8
+- name: Include distribution specific tasks
+  include_tasks: "install_{{ ansible_os_family | lower }}.yml"
 
 - name: Ensure required kernel parameters set correctly
   sysctl:
@@ -69,12 +20,6 @@
     name: "{{ item.key }}"
     value: "{{ item.value }}"
   loop: "{{ required_kernel_params }}"
-
-- name: Set httpd_can_network_connect flag on and keep it persistent across reboots
-  seboolean:
-    name: httpd_can_network_connect
-    state: true
-    persistent: true
 
 - name: Stop firewalld if desired by user
   service:
@@ -111,9 +56,7 @@
   loop:
     - {src_path: nginx.conf.j2, dest_path: /etc/nginx/nginx.conf, user: root, group: root, mode: '0644'}
     - {src_path: nginx.service.j2, dest_path: /usr/lib/systemd/system/nginx.service, user: root, group: root, mode: '0644'}
-  notify:
-    - force systemd to reread configs
-    - start and enable nginx
+  notify: start and enable nginx
 
 - name: Include ramfs.yml conditionally
   include_tasks: ramfs.yml
