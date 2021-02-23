@@ -4,3 +4,4 @@ version: "1.18.0-2~{{ ansible_distribution_release }}"
 required_packages:
   - firewalld
 systemd_file_path: /lib/systemd/system/nginx.service
+apt_key: ABF5BD827BD9BF62
