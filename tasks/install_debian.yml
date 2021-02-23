@@ -1,1 +1,40 @@
 ---
+
+- name: Include distribution specific variables
+  include_vars: "{{ ansible_distribution | lower }}.yml"
+
+- name: Transfer nginx.list.j2 template to the remote location
+  template:
+    src: nginx.list.j2
+    dest: /etc/apt/sources.list.d/nginx.list
+    owner: root
+    group: root
+    mode: 0644
+
+- name: Ensure required packages are installed
+  apt:
+    name: "{{ required_packages }}"
+    update_cache: true
+    state: present
+
+- name: Install Nginx for Debian based OS block
+  block:
+    - name: Install the specified version of Nginx from nginx repo
+      apt:
+        name: "nginx={{ version }}"
+        state: present
+        allow_unauthenticated: true
+      when: version != "latest"
+
+    - name: Install the latest version of Nginx from nginx repo
+      apt:
+        name: nginx
+        state: present
+        allow_unauthenticated: true
+      when: version == "latest"
+
+- name: Ensure ufw systemd service is stopped and disabled
+  service:
+    name: ufw
+    state: stopped
+    enabled: false

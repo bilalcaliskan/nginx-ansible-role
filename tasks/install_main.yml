@@ -55,7 +55,7 @@
     mode: "{{ item.mode }}"
   loop:
     - {src_path: nginx.conf.j2, dest_path: /etc/nginx/nginx.conf, user: root, group: root, mode: '0644'}
-    - {src_path: nginx.service.j2, dest_path: /usr/lib/systemd/system/nginx.service, user: root, group: root, mode: '0644'}
+    - {src_path: nginx.service.j2, dest_path: "{{ systemd_file_path }}", user: root, group: root, mode: '0644'}
   notify: start and enable nginx
 
 - name: Include ramfs.yml conditionally

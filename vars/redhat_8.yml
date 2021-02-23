@@ -3,3 +3,4 @@
 required_packages:
   - firewalld
   - python3-policycoreutils
+systemd_file_path: /usr/lib/systemd/system/nginx.service
