@@ -11,15 +11,18 @@
     group: root
     mode: 0644
 
-- name: Add an apt key by id from a keyserver
-  apt_key:
-    keyserver: keyserver.ubuntu.com
-    id: "{{ apt_key }}"
+- name: Add an Apt signing key, uses whichever key is at the URL
+  ansible.builtin.apt_key:
+    url: https://ftp-master.debian.org/keys/archive-key-6.0.asc
+    state: present
+
+- name: Update package cache
+  apt:
+    update_cache: true
 
 - name: Ensure required packages are installed
   apt:
     name: "{{ required_packages }}"
-    update_cache: true
     state: present
 
 - name: Install Nginx for Debian based OS block
