@@ -3,8 +3,6 @@
 name: PR
 on:
   pull_request:
-  # schedule:
-  #  - cron: "0 6 * * 3"
 
 defaults:
   run:

@@ -1,7 +1,7 @@
 ---
 
 - name: Include distribution and version specific variables
-  include_vars: "{{ ansible_distribution | lower }}_{{ ansible_distribution_version }}.yml"
+  include_vars: "{{ ansible_distribution | lower }}.yml"
 
 - name: Transfer nginx.list.j2 template to the remote location
   template:

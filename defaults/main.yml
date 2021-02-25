@@ -5,6 +5,7 @@ install_nginx: true
 firewalld_enabled: true
 
 ############# Nginx Specific Parameters #############
+# nginx version. version may differ between OS families, check vars/ folder for specific distributions
 version: 1.17.9
 worker_processes: auto
 worker_connections: 4096

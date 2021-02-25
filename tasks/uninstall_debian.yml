@@ -4,6 +4,7 @@
   apt:
     name: nginx
     state: absent
+    purge: true
 
 - name: Remove transferred files and created directories
   file:
