@@ -6,6 +6,13 @@
 - name: Get service facts
   service_facts:
 
+- name: Ensure gpg-agent is installed
+  apt:
+    name: gpg-agent
+    state: present
+    update_cache: true
+  when: (ansible_distribution_release | lower) != "xenial"
+
 - name: Transfer nginx.list.j2 template to the remote location
   template:
     src: nginx.list.j2
@@ -13,13 +20,6 @@
     owner: root
     group: root
     mode: 0644
-
-- name: Ensure gpg-agent is installed
-  apt:
-    name: gpg-agent
-    state: present
-    update_cache: true
-  when: (ansible_distribution_release | lower) != "xenial"
 
 - name: Add an Apt signing key, uses whichever key is at the URL
   apt_key:
