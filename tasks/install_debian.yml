@@ -1,7 +1,7 @@
 ---
 
 - name: Include distribution and version specific variables
-  include_vars: "{{ ansible_distribution | lower }}.yml"
+  include_vars: "{{ ansible_os_family | lower }}.yml"
 
 - name: Transfer nginx.list.j2 template to the remote location
   template:
@@ -20,7 +20,6 @@
   apt:
     name: "{{ required_packages }}"
     update_cache: true
-    allow_unauthenticated: true
     state: present
 
 - name: Install Nginx for Debian based OS block
@@ -29,14 +28,12 @@
       apt:
         name: "nginx={{ version }}"
         state: present
-        allow_unauthenticated: true
       when: version != "latest"
 
     - name: Install the latest version of Nginx from nginx repo
       apt:
         name: nginx
         state: present
-        allow_unauthenticated: true
       when: version == "latest"
 
 - name: Ensure ufw systemd service is stopped and disabled
