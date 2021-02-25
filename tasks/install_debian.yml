@@ -3,6 +3,9 @@
 - name: Include distribution and version specific variables
   include_vars: "{{ ansible_os_family | lower }}.yml"
 
+- name: Get service facts
+  service_facts:
+
 - name: Transfer nginx.list.j2 template to the remote location
   template:
     src: nginx.list.j2
@@ -43,3 +46,4 @@
     name: ufw
     state: stopped
     enabled: false
+  when: ansible_facts.services["ufw"] is defined
