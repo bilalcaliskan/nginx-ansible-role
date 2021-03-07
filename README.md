@@ -73,7 +73,7 @@ You can also override default variables inside [vars/main.yml](vars/main.yml)*:
 version: 1.17.9
 ```
 
-### Example Playbook File For `Ununinstallation`
+### Example Playbook File For Uninstallation
 
 ```yaml
 - hosts: all
