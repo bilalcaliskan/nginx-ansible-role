@@ -4,22 +4,5 @@
   hosts: all
   become: true
   ignore_errors: true
-  tasks:
-    - name: Install with non-defaults
-      import_role:
-        name: bilalcaliskan.nginx
-      vars:
-        enable_ramfs: false
-        enable_caching: false
-    
-    - name: Uninstall
-      import_role:
-        name: bilalcaliskan.nginx
-      vars:
-        install_nginx: false
-    
-    - name: Install with defaults
-      import_role:
-        name: bilalcaliskan.nginx
-      vars:
-        install_nginx: true
+  roles:
+    - role: bilalcaliskan.nginx
