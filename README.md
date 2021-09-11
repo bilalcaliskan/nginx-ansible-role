@@ -1,38 +1,26 @@
-## Nginx Ansible Role
+# Nginx Ansible Role
 
 [![CI](https://github.com/bilalcaliskan/nginx-ansible-role/workflows/CI/badge.svg?event=push)](https://github.com/bilalcaliskan/nginx-ansible-role/actions?query=workflow%3ACI)
 
-Installs and configures Nginx.
+Installs and configures Nginx on Redhat/Debian based hosts.
 
-### Requirements
+## Requirements
 
 This role requires minimum Ansible version 2.4 and maximum Ansible version 2.9. You can install suggested version with pip:
 ```
 $ pip install "ansible==2.9.16"
 ```
 
-Also note that this role requires root access, so either run it in a playbook with a global `become: true`, or invoke the role in your playbook like:
+Also note that this role requires root access, so either run it in a playbook with a global `become: true`, or invoke the role in your playbook.
 
-```yaml
-- hosts: all
-  become: true
-  roles:
-    - role: bilalcaliskan.nginx
-```
-
-### Role Variables
+## Role Variables
 See the default values in [defaults/main.yml](defaults/main.yml). You can overwrite them in [vars/main.yml](vars/main.yml) if neccessary or you can set them while running playbook.
 
-> Please note that this role will ensure that `firewalld` systemd service on your servers are started and enabled by default. If you want to stop and disable `firewalld` service, please modify below variable as false when running playbook:  
-> ```yaml  
+> Please note that this role will ensure that `firewalld` systemd service on your servers are started and enabled by default. If you want to stop and disable `firewalld` service, please modify below variable as false when running playbook:
+> ```yaml
 > firewalld_enabled: false
 
-### Dependencies
-
-None
-
-### Additional Vserver Configuration
-
+**Additional vserver configuration**
 You can provide additional Nginx vserver configurations if you like. To do that;
 
 _invoke the role with role vars:_
@@ -48,7 +36,12 @@ _invoke the role with role vars:_
             port: ${port_of_vserver}/tcp
 ```
 
-### Example Inventory File
+## Dependencies
+
+None
+
+## Examples
+### Inventory
 ```
 [nginx]
 nginxnode01.example.com
@@ -56,8 +49,7 @@ nginxnode02.example.com
 nginxnode03.example.com
 ```
 
-### Example Playbook File For Installation
-
+### Installation
 ```yaml
 - hosts: all
   become: true
@@ -73,13 +65,7 @@ nginxnode03.example.com
         ramfs_size: 2G
 ```
 
-You can also override default variables inside [vars/main.yml](vars/main.yml)*:
-```yaml
-version: 1.17.9
-```
-
-### Example Playbook File For Uninstallation
-
+### Uninstallation
 ```yaml
 - hosts: all
   become: true
@@ -89,6 +75,12 @@ version: 1.17.9
         install_nginx: false
 ```
 
-### License
+## Development
+This project requires below tools while developing:
+- [Ansible 2.4 or higher](https://docs.ansible.com/ansible/latest/installation_guide/intro_installation.html)
+- [pre-commit](https://pre-commit.com/)
+- [ansible-lint](https://ansible-lint.readthedocs.io/en/latest/installing.html#using-pip-or-pipx) - required by [pre-commit](https://pre-commit.com/)
+- [Bash shell](https://www.gnu.org/software/bash/) - required by [pre-commit](https://pre-commit.com/)
 
-MIT / BSD
+## License
+Apache License 2.0
