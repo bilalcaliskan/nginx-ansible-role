@@ -10,6 +10,7 @@ defaults:
   run:
     working-directory: 'bilalcaliskan.nginx'
 
+
 jobs:
   lint:
     runs-on: ubuntu-latest
