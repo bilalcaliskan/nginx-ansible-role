@@ -1,9 +1,10 @@
 ---
+
 extends: default
 
 rules:
   line-length:
-    max: 120
+    max: 150
     level: warning
 
 ignore: |
