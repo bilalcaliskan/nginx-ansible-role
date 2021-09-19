@@ -20,7 +20,6 @@ repos:
       - id: yamllint
         files: \.(yaml|yml)$
         types: [file, yaml]
-        args: [-c=.yamllint]
 
   - repo: https://github.com/ansible-community/ansible-lint.git
     rev: v5.1.3
