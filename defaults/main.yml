@@ -2,7 +2,7 @@
 
 ############# Behavioral Parameters #############
 install_nginx: true
-firewalld_enabled: true
+firewalld_enabled: false
 
 ############# Nginx Specific Parameters #############
 # nginx version. version may differ between OS families, check vars/ folder for specific distributions

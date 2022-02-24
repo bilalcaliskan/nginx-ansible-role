@@ -21,13 +21,6 @@
     value: "{{ item.value }}"
   loop: "{{ required_kernel_params }}"
 
-- name: Stop firewalld if desired by user
-  service:
-    name: firewalld
-    state: stopped
-    enabled: false
-  when: not (firewalld_enabled | bool)
-
 - name: Firewalld related block
   block:
     - name: Ensure firewalld is started and enabled

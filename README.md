@@ -1,6 +1,7 @@
 # Nginx Ansible Role
 
 [![CI](https://github.com/bilalcaliskan/nginx-ansible-role/workflows/CI/badge.svg?event=push)](https://github.com/bilalcaliskan/nginx-ansible-role/actions?query=workflow%3ACI)
+[![GitHub tag](https://img.shields.io/github/tag/bilalcaliskan/nginx-ansible-role.svg)](https://GitHub.com/bilalcaliskan/nginx-ansible-role/tags/)
 
 Installs and configures Nginx on Redhat/Debian based hosts.
 
@@ -16,9 +17,10 @@ Also note that this role requires root access, so either run it in a playbook wi
 ## Role Variables
 See the default values in [defaults/main.yml](defaults/main.yml). You can overwrite them in [vars/main.yml](vars/main.yml) if neccessary or you can set them while running playbook.
 
-> Please note that this role will ensure that `firewalld` systemd service on your servers are started and enabled by default. If you want to stop and disable `firewalld` service, please modify below variable as false when running playbook:
+> Please note that this role can ensure that `firewalld` systemd service on your servers are started and enabled by default. If you want to start and enable `firewalld` service, please modify below variable as true while running playbook:
 > ```yaml
-> firewalld_enabled: false
+> firewalld_enabled: true
+> ```
 
 **Additional vserver configuration**
 You can provide additional Nginx vserver configurations if you like. To do that;
