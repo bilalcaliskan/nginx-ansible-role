@@ -1,5 +1,4 @@
 ---
-
 - name: Include install.yml file conditionally
   include_tasks: install_main.yml
   when: (install_nginx | bool)

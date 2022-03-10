@@ -1,5 +1,4 @@
 ---
-
 - name: Transfer template files to the remote location
   copy:
     src: "{{ item.file }}"

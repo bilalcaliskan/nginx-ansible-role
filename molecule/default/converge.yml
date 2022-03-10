@@ -1,8 +1,9 @@
 ---
-
 - name: Converge with defaults
   hosts: all
   become: true
-  ignore_errors: true
   roles:
     - role: bilalcaliskan.nginx
+      vars:
+        sysctl_enabled: false
+        os_disable_swap: false

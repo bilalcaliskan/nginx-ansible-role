@@ -6,13 +6,16 @@
 Installs and configures Nginx on Redhat/Debian based hosts.
 
 ## Requirements
+This role has below requirements:
+- [Python 3.x](https://www.python.org/downloads/)
+- [Ansible](https://docs.ansible.com/) (min 2.4, suggested 2.9.16)
 
-This role requires minimum Ansible version 2.4 and maximum Ansible version 2.9. You can install suggested version with pip:
+You can install suggested version with pip3:
 ```
-$ pip install "ansible==2.9.16"
+$ pip3 install "ansible==2.9.16"
 ```
 
-Also note that this role requires root access, so either run it in a playbook with a global `become: true`, or invoke the role in your playbook.
+Note that this role requires root access, so either run it in a playbook with a global `become: true`, or invoke the role in your playbook.
 
 ## Role Variables
 See the default values in [defaults/main.yml](defaults/main.yml). You can overwrite them in [vars/main.yml](vars/main.yml) if neccessary or you can set them while running playbook.
@@ -39,7 +42,6 @@ _invoke the role with role vars:_
 ```
 
 ## Dependencies
-
 None
 
 ## Examples
@@ -78,11 +80,17 @@ nginxnode03.example.com
 ```
 
 ## Development
-This project requires below tools while developing:
-- [Ansible 2.4 or higher](https://docs.ansible.com/ansible/latest/installation_guide/intro_installation.html)
+This project requires below tools for development:
+- [Python 3.x](https://www.python.org/downloads/)
+- [Ansible](https://docs.ansible.com/ansible/latest/installation_guide/intro_installation.html) - (min 2.4, suggested 2.9.16)
 - [pre-commit](https://pre-commit.com/)
 - [ansible-lint](https://ansible-lint.readthedocs.io/en/latest/installing.html#using-pip-or-pipx) - required by [pre-commit](https://pre-commit.com/)
 - [Bash shell](https://www.gnu.org/software/bash/) - required by [pre-commit](https://pre-commit.com/)
+
+After you install all the tools above, you can simply configure [pre-commit](https://pre-commit.com/) by typing:
+```shell
+$ pre-commit install
+```
 
 ## License
 Apache License 2.0

@@ -1,7 +1,4 @@
 ---
-
-# TODO: Review https://github.com/nginxinc/ansible-role-nginx for improvements
-
 - name: Get service facts
   service_facts:
 
@@ -19,6 +16,7 @@
     reload: true
     name: "{{ item.key }}"
     value: "{{ item.value }}"
+  when: (sysctl_enabled | bool)
   loop: "{{ required_kernel_params }}"
 
 - name: Firewalld related block

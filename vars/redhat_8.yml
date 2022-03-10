@@ -1,5 +1,4 @@
 ---
-
 required_packages:
   - firewalld
   - python3-policycoreutils

@@ -1,5 +1,4 @@
 ---
-
 - name: Remove nginx package
   yum:
     name: nginx

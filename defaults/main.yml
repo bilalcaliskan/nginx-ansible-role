@@ -1,5 +1,4 @@
 ---
-
 ############# Behavioral Parameters #############
 install_nginx: true
 firewalld_enabled: false
@@ -22,6 +21,7 @@ vservers:
 
 ############# OS Specific Parameters #############
 # below kernel params referenced from https://medium.com/@pawilon/tuning-your-linux-kernel-and-haproxy-instance-for-high-loads-1a2105ea553e
+sysctl_enabled: true
 required_kernel_params:
   - key: fs.file-max
     value: 500000

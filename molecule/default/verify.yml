@@ -1,5 +1,4 @@
 ---
-
 - name: Verify port
   hosts: all
   tasks:

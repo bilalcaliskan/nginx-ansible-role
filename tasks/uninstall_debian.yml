@@ -1,5 +1,4 @@
 ---
-
 - name: Remove nginx package
   apt:
     name: nginx

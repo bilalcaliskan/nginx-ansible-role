@@ -1,5 +1,4 @@
 ---
-
 - name: Check if ramfs directory exists
   stat:
     path: "{{ ramfs_dir }}"
